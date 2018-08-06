@@ -5,13 +5,17 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack",
+    "wds": "webpack-dev-server",
+    "serve": "static public",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "node-static": "^0.7.10",
     "webpack": "^4.16.4",
-    "webpack-command": "^0.4.1"
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.5"
   }
 }
