@@ -1,10 +1,22 @@
-document.addEventListener('DOMContentLoaded', () => {
+(() => {
   const video = document.getElementById('video');
   const canvas = document.getElementById('canvas');
   const ctx = canvas.getContext('2d');
 
-  video.addEventListener('playing', () => {
-    console.log('playing');
-    ctx.drawImage(video, 0, 0);
+  function redraw() {
+    requestAnimationFrame(() => {
+      ctx.drawImage(video, 0, 0);
+      !video.paused && window.requestAnimationFrame(redraw);
+    });
+  }
+
+  video.addEventListener('play', () => {
+    window.requestAnimationFrame(redraw);
   });
-});
+
+  canvas.addEventListener('click', () => {
+    video.paused ? video.play() : video.pause();
+  });
+
+  // setTimeout(() => video.play(), 0);
+})();
