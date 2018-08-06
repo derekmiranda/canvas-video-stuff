@@ -3,6 +3,9 @@
   const canvas = document.getElementById('canvas');
   const ctx = canvas.getContext('2d');
 
+  ctx.fillStyle = '#000000';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
   function redraw() {
     requestAnimationFrame(() => {
       ctx.drawImage(video, 0, 0);
