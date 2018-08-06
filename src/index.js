@@ -24,7 +24,11 @@
   if (!navigator.getUserMedia) {
     window.alert('Sorry. navigator.getUserMedia() is not available.');
   } else {
-    navigator.getUserMedia({ video: true }, gotStream, noStream);
+    navigator.getUserMedia(
+      { video: { width: 1280, height: 720 } },
+      gotStream,
+      noStream
+    );
   }
 
   function gotStream(stream) {
