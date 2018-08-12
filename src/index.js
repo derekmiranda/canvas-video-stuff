@@ -24,8 +24,12 @@
   if (!navigator.getUserMedia) {
     window.alert('Sorry. navigator.getUserMedia() is not available.');
   } else {
-    navigator.getUserMedia(
-      { video: { width: 1280, height: 720 } },
+    navigator.getUserMedia({
+        video: {
+          width: canvas.width,
+          height: canvas.height
+        }
+      },
       gotStream,
       noStream
     );
@@ -39,10 +43,12 @@
       video.src = stream;
     }
 
-    video.play();
+    setTimeout(() => {
+      video.play()
+    }, 0)
     redraw();
 
-    video.onerror = function(e) {
+    video.onerror = function (e) {
       stream.stop();
     };
     stream.onended = noStream;
@@ -59,4 +65,4 @@
   canvas.addEventListener('click', () => {
     video.paused ? video.play() : video.pause();
   });
-})();
+})()
