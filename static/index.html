@@ -6,22 +6,29 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<style>
-		#canvas {
+		#main {
+			text-align: center;
 			position: absolute;
-			top:0;
-			bottom: 0;
+			top: 0;
 			left: 0;
 			right: 0;
-			margin:auto;
+			bottom: 0;
+			margin: auto;
+			height: <%= htmlWebpackPlugin.options.height %>px;
+		}
+
+		.canvas {
+			display: inline;
 		}
 	</style>
 	<title>Video in Canvas</title>
-	<script type="text/javascript" src="dist/main.js" async></script>
 </head>
 
 <body>
 	<video id="video" style="display: none;"></video>
-	<canvas id="canvas" width="640" height="360"></canvas>
+	<main id="main">
+		<canvas id="canvas" class="canvas" width="<%= htmlWebpackPlugin.options.width %>" height="<%= htmlWebpackPlugin.options.height %>"></canvas>
+	</main>
 </body>
 
 
