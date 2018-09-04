@@ -1,4 +1,5 @@
 import { mcEscherBall } from './functions'
+import { createEmptyImgData } from './functions'
 
 (() => {
   const video = document.getElementById('video');
@@ -10,11 +11,11 @@ import { mcEscherBall } from './functions'
 
   function redraw() {
     requestAnimationFrame(() => {
-      if (video.HAVE_ENOUGH_DATA && !video.paused) {
+      if (video.HAVE_ENOUGH_DATA && !video.paused) { 
         ctx.drawImage(video, 0, 0);
         const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height)
-        mcEscherBall(imgData, canvas)
-        ctx.putImageData(imgData, 0, 0)
+        const newImgData = mcEscherBall(imgData, canvas)
+        ctx.putImageData(newImgData, 0, 0)
       }
       window.requestAnimationFrame(redraw);
     });
