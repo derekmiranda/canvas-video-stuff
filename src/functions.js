@@ -19,7 +19,7 @@ export function createEmptyImgData(width, height, color = [0, 0, 0, 255]) {
 
 // delays color channels
 // red stays at same speed, then green delays, then blue delays
-export function createChannelDelayEffect(delay = 100 /* in frames */) {
+export function createChannelDelayEffect(delay = 10 /* in frames */) {
   let currFrame = 0;
   const channelQueues = {
     g: new Queue(),
