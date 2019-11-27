@@ -17,6 +17,7 @@ export default class Queue {
       this.first = this.last = createNode(item);
     } else {
       this.last.next = createNode(item);
+      this.last = this.last.next;
     }
   }
 }
