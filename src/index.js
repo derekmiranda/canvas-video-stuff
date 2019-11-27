@@ -26,34 +26,28 @@ import { createEmptyImgData } from './functions';
     });
   }
 
-  navigator.getUserMedia =
-    navigator.getUserMedia ||
-    navigator.webkitGetUserMedia ||
-    navigator.mozGetUserMedia;
+  // navigator.getUserMedia ||
+  // navigator.webkitGetUserMedia ||
+  // navigator.mozGetUserMedia;
   window.URL = window.URL || window.webkitURL;
 
-  if (!navigator.getUserMedia) {
-    window.alert('Sorry. navigator.getUserMedia() is not available.');
+  if (!navigator.mediaDevices.getUserMedia) {
+    window.alert(
+      'Sorry. navigator.mediaDevices.getUserMedia() is not available.'
+    );
   } else {
-    navigator.getUserMedia(
-      {
+    navigator.mediaDevices
+      .getUserMedia({
         video: {
           width: canvas.width,
           height: canvas.height
         }
-      },
-      gotStream,
-      noStream
-    );
+      })
+      .then(gotStream)
+      .catch(noStream);
   }
 
   function gotStream(stream) {
-    // if (window.URL) {
-    //   video.src = window.URL.createObjectURL(stream);
-    // } // Opera
-    // else {
-    //   video.src = stream;
-    // }
     video.srcObject = stream;
 
     setTimeout(() => {
