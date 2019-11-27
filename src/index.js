@@ -1,21 +1,26 @@
-import { mcEscherBall } from './functions'
-import { createEmptyImgData } from './functions'
+import {
+  mcEscherBall,
+  desaturate,
+  createChannelDelayEffect
+} from './functions';
+import { createEmptyImgData } from './functions';
 
 (() => {
   const video = document.getElementById('video');
   const canvas = document.getElementById('canvas');
   const ctx = canvas.getContext('2d');
+  const channelDelay = createChannelDelayEffect();
 
   ctx.fillStyle = '#000000';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   function redraw() {
     requestAnimationFrame(() => {
-      if (video.HAVE_ENOUGH_DATA && !video.paused) { 
+      if (video.HAVE_ENOUGH_DATA && !video.paused) {
         ctx.drawImage(video, 0, 0);
-        const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height)
-        const newImgData = mcEscherBall(imgData, canvas)
-        ctx.putImageData(newImgData, 0, 0)
+        const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const newImgData = channelDelay(imgData, canvas);
+        ctx.putImageData(newImgData, 0, 0);
       }
       window.requestAnimationFrame(redraw);
     });
@@ -30,7 +35,8 @@ import { createEmptyImgData } from './functions'
   if (!navigator.getUserMedia) {
     window.alert('Sorry. navigator.getUserMedia() is not available.');
   } else {
-    navigator.getUserMedia({
+    navigator.getUserMedia(
+      {
         video: {
           width: canvas.width,
           height: canvas.height
@@ -42,19 +48,20 @@ import { createEmptyImgData } from './functions'
   }
 
   function gotStream(stream) {
-    if (window.URL) {
-      video.src = window.URL.createObjectURL(stream);
-    } // Opera
-    else {
-      video.src = stream;
-    }
+    // if (window.URL) {
+    //   video.src = window.URL.createObjectURL(stream);
+    // } // Opera
+    // else {
+    //   video.src = stream;
+    // }
+    video.srcObject = stream;
 
     setTimeout(() => {
-      video.play()
-    }, 0)
+      video.play();
+    }, 0);
     redraw();
 
-    video.onerror = function (e) {
+    video.onerror = function(e) {
       stream.stop();
     };
     stream.onended = noStream;
@@ -71,4 +78,4 @@ import { createEmptyImgData } from './functions'
   canvas.addEventListener('click', () => {
     video.paused ? video.play() : video.pause();
   });
-})()
+})();
