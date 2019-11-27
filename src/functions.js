@@ -31,35 +31,24 @@ export function createChannelDelayEffect(delay = 10 /* in frames */) {
     currFrame += 1;
 
     // store current green and blue channel values
-    const gVals = _storeChannelValues(imgData, 1);
-    const bVals = _storeChannelValues(imgData, 2);
+    const queuedGVals = _storeChannelValues(imgData, 1);
+    const queuedBVals = _storeChannelValues(imgData, 2);
 
-    channelQueues.g.add(gVals);
-    channelQueues.b.add(bVals);
+    channelQueues.g.add(queuedGVals);
+    channelQueues.b.add(queuedBVals);
 
-    // pause greens and blues
-    if (_currFrame < delay) {
-      const firstGVals = channelQueues.g.first.item;
-      const firstBVals = channelQueues.b.first.item;
-      _applyChannelValuesToImgData(imgData, firstGVals, 1);
-      _applyChannelValuesToImgData(imgData, firstBVals, 2);
-      return imgData;
-    }
+    const gVals =
+      _currFrame < delay
+        ? channelQueues.g.first.item
+        : channelQueues.g.pop().item;
+    const bVals =
+      _currFrame < 2 * delay
+        ? channelQueues.b.first.item
+        : channelQueues.b.pop().item;
 
-    // now just pause blues
-    else if (_currFrame < 2 * delay) {
-      const currGVals = channelQueues.g.pop().item;
-      const firstBVals = channelQueues.b.first.item;
-      _applyChannelValuesToImgData(imgData, currGVals, 1);
-      _applyChannelValuesToImgData(imgData, firstBVals, 2);
-      return imgData;
-    }
+    _applyChannelValuesToImgData(imgData, gVals, 1);
+    _applyChannelValuesToImgData(imgData, bVals, 2);
 
-    // all channels unpaused now
-    const currGVals = channelQueues.g.pop().item;
-    const currBVals = channelQueues.b.pop().item;
-    _applyChannelValuesToImgData(imgData, currGVals, 1);
-    _applyChannelValuesToImgData(imgData, currBVals, 2);
     return imgData;
   };
 }
